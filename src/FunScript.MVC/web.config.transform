@@ -1,0 +1,17 @@
+﻿<configuration>
+	<system.web>
+		<!-- Uncomment if using IIS 7 Classic Mode, IIS 6, or Mono -->
+		<!--
+		<httpHandlers>
+			<add verb="GET" path="*.fs" type="FunScript.MVC.Handler, FunScript.MVC" />
+		</httpHandlers>
+		-->
+	</system.web>
+
+	<system.webServer>
+		<handlers>
+			<remove name="FunScriptMVC" />
+			<add name="FunScriptMVC" verb="GET" path="*.fsx" type="FunScript.MVC.Handler, FunScript.MVC" preCondition="integratedMode" />
+		</handlers>
+	</system.webServer>
+</configuration>
