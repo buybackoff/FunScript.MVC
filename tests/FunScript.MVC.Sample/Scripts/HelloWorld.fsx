@@ -1,13 +1,12 @@
 ﻿#r "../bin/Funscript.dll"
 #r "../bin/Funscript.Interop.dll"
 #r "../bin/FunScript.TypeScript.Binding.lib.dll"
-#r "../bin/FunScript.TypeScript.Binding.jquery.dll"
+//#r "../bin/FunScript.TypeScript.Binding.jquery.dll"
 
 open FunScript
 open FunScript.TypeScript
 
 [<ReflectedDefinition>]
-[<NoComparisonAttribute>]
 type TestRecord =
     {First : string; Second : string}
 
