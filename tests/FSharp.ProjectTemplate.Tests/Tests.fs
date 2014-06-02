@@ -1,4 +1,5 @@
-﻿module FunScript.MVC.Tests
+﻿//[<ReflectedDefinition>]
+module FunScript.MVC.Tests
 
 open FunScript.MVC
 open NUnit.Framework
@@ -11,6 +12,37 @@ open Microsoft.FSharp.Compiler.SimpleSourceCodeServices
 
 open System.Text.RegularExpressions
 
+
+open FunScript
+open FunScript.TypeScript
+
+[<ReflectedDefinition>]
+type TestRecord =
+    { First : string; Second : string}
+
+[<ReflectedDefinition>]
+let main() = 
+    let a = { First = "a"; Second = "b"}
+    ()
+
+[<Test>]
+let ``FunScript works`` () =
+    let main =
+        let types = Assembly.GetExecutingAssembly().GetTypes()
+        let flags = BindingFlags.NonPublic ||| BindingFlags.Public ||| BindingFlags.Static
+        let mains = 
+            [ for typ in types do
+                for mi in typ.GetMethods(flags) do
+                    if mi.Name = "main" then yield mi ]
+        let main = 
+            match mains with
+            | [it] -> it
+            | _ -> failwith "Main function not found!"
+        Expr.Call(main, [])
+
+    let source = FunScript.Compiler.Compiler.Compile(main)
+    Console.WriteLine(source)
+    ()
 
 [<Test>]
 let ``Could extract references from script`` () =
@@ -58,7 +90,7 @@ let ``Could compile script`` () =
             | _ -> failwith "Main function not found!"
         Expr.Call(main, [])
 
-    let source = FunScript.Compiler.Compiler.Compile(main, components=[])
+    let source = FunScript.Compiler.Compiler.Compile(main)
 
     Console.WriteLine(source)
 

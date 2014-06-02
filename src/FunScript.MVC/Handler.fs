@@ -46,20 +46,20 @@ type public Handler() =
 
         // TODO error handling
                 
-        let main =
+        let m =
             let types = dynAssembly.Value.GetTypes()
             let flags = BindingFlags.NonPublic ||| BindingFlags.Public ||| BindingFlags.Static
             let mains = 
                 [ for typ in types do
                     for mi in typ.GetMethods(flags) do
                         if mi.Name = "main" then yield mi ]
-            let main = 
+            let m' = 
                 match mains with
                 | [it] -> it
                 | _ -> failwith "Main function not found!"
-            Expr.Call(main, [])
+            Expr.Call(m', [])
 
-        let source = FunScript.Compiler.Compiler.Compile(main)
+        let source = FunScript.Compiler.Compiler.Compile(m)
 
         resp.AddFileDependency(ctx.Server.MapPath(relativePath))
         resp.Cache.SetCacheability(HttpCacheability.Server)
